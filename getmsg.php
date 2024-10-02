@@ -9,12 +9,12 @@ if (isset($_GET['ChannelId']) && isset($_GET['AccountId'])) {
     if(isset($_GET['Id']))
     {
         $id = $_GET['Id'];
-        $query = "SELECT `Id`, `Msg` FROM `Message` WHERE ChannelId = $channelId and AccountId = $accountId and Id >= $id";
+        $query = "SELECT `Id`, `Msg`, `Time` FROM `Message` WHERE ChannelId = $channelId and AccountId = $accountId and Id = $id";
         GetMsg($conn, $query);
     }
     //get all msg of account in channel
     else{
-        $query = "SELECT `Id`, `Msg` FROM `Message` WHERE ChannelId = $channelId and AccountId = $accountId";
+        $query = "SELECT `Id`, `Msg`, `Time` FROM `Message` WHERE ChannelId = $channelId and AccountId = $accountId";
         GetMsg($conn, $query);
     }
 
@@ -29,7 +29,7 @@ function GetMsg($conn, $query)
     {
         while ($r = mysqli_fetch_assoc($result)) 
         {
-            echo "Id: ".$r['Id']." Message: ".$r["Msg"];            
+            echo "update_id: ".$r['Id'].", Message: ".$r["Msg"].". "."Time: ".$r["Time"];      
             echo '<br>';               
         }
     }else {
