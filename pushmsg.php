@@ -5,16 +5,16 @@ if (isset($_GET['ChannelId']) && isset($_GET['AccountId']) && isset($_GET['Msg']
     $channelId = $_GET['ChannelId'];
     $accountId = $_GET['AccountId'];
     $msg = $_GET['Msg'];
-    $numberOfRowsToDelete = 50;
-    $maxRows = 150;
+    $numberOfRowsToDelete = 100;
+    $maxRows = 200;
 
     
     // if total msg pass over Limit msg -> delete old msg
-    $query = "SELECT COUNT(*) AS total FROM Message";
+    $query = "SELECT COUNT(*) AS total FROM Message WHERE ChannelId = $channelId and AccountId = $accountId";
     $totalMsg = GetTotals($conn, $query);
     if ($totalMsg > $maxRows)
     {
-        $query = "DELETE FROM Message WHERE id IN ( SELECT id FROM ( SELECT id FROM Message ORDER BY id LIMIT $numberOfRowsToDelete ) AS subquery );";
+        $query = "DELETE FROM Message WHERE id IN ( SELECT id FROM ( SELECT id FROM Message WHERE AccountId=$accountId and ChannelId=$channelId ORDER BY id LIMIT $numberOfRowsToDelete ) AS subquery );";
         DeleteMsg($conn, $query);
     }        
 
